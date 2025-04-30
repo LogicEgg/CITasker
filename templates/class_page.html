@@ -8,8 +8,10 @@
 <body>
 
     <div>
-        <form action="{{ url_for('add') }}" method="POST">
-            <input type="text" name="event">
+        <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
+            <input type="hidden" name="id" value="{{ course.id }}">
+            <input type="text" name="event" placeholder="Description">
+            <input type="text" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)">
             <input type="submit" value="Add Item" class="button">
         </form>
     </div>
@@ -18,7 +20,7 @@
     {% for i in events %}
     <div>
         <h3>{{i.description}}</h3>
-        <p>{{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
+        <p>Due {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
     </div>
     {% endfor %}
     

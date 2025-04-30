@@ -3,10 +3,13 @@ from pathlib import Path
 from db import db
 from sqlalchemy import select
 from models import Course, Event
+from routes import api_bp
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
 app.instance_path = Path(".").resolve()
+
+app.register_blueprint(api_bp)
 
 db.init_app(app)
 
@@ -17,10 +20,6 @@ def homepage():
 @app.route("/terms")
 def term_page():
     return render_template("terms.html")
-
-@app.route("/add", methods=["POST"])
-def add():
-    pass
 
 @app.route("/terms/<int:num>")
 def term_classes(num):
