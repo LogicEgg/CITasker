@@ -10,7 +10,7 @@
     {% for i in events %}
     <div>
         <h3>{{i.description}}</h3>
-        <p>{{i.deadline}}</p>
+        <p>{{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
     </div>
     {% endfor %}
 </body>
