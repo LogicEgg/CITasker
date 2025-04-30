@@ -18,6 +18,10 @@ def homepage():
 def term_page():
     return render_template("terms.html")
 
+@app.route("/add", methods=["POST"])
+def add():
+    pass
+
 @app.route("/terms/<int:num>")
 def term_classes(num):
     data = db.session.execute(select(Course).where(Course.term == num)).scalars()
