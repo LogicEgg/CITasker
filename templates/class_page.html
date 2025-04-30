@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class To-do List</title>
+</head>
+<body>
+    <h1>{{course.name}}</h1>
+    {% for i in events %}
+    <div>
+        <h3>{{i.description}}</h3>
+        <p>{{i.deadline}}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>
