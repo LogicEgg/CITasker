@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+<<<<<<< HEAD
 {% block content%}
 <h1>{{course.name}}</h1>
 
@@ -14,6 +15,15 @@
             <input type="date" class="form-control" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
         </div>
         <button type="submit" class="btn btn-primary">Add Event</button>
+=======
+    <div>
+        <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
+            <input type="hidden" name="id" value="{{ course.id }}">
+            <input type="text" name="event" placeholder="Description">
+            <input type="text" name="deadline" placeholder="Deadline (YYYY-MM-DD HH:MM)">
+            <input type="submit" value="Add Item" class="button">
+        </form>
+>>>>>>> d74b22c (regex check)
     </div>
 </form>
 
