@@ -7,11 +7,11 @@
         <input type="hidden" name="id" value="{{ course.id }}" required>
         <div class="mb-3">
             <label for="event" class="form-label">Event:</label>
-            <input type="text" class="form-control"id="event" placeholder="Description">
+            <input type="text" class="form-control" name="event" placeholder="Description">
         </div>
         <div class="mb-3">
             <label for="deadline" class="form-label">Deadline:</label>
-            <input type="date" class="form-control" id="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
+            <input type="date" class="form-control" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
         </div>
         <button type="submit" class="btn btn-primary">Add Event</button>
     </div>
