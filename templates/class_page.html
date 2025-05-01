@@ -1,28 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class To-do List</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <div>
-        <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
-            <input type="hidden" name="id" value="{{ course.id }}">
-            <input type="text" name="event" placeholder="Description">
-            <input type="text" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)">
-            <input type="submit" value="Add Item" class="button">
-        </form>
+{% block content%}
+<h1>{{course.name}}</h1>
+
+<form action="{{ url_for('api.add', id=course.id) }}" method="POST">
+        <input type="hidden" name="id" value="{{ course.id }}" required>
+        <div class="mb-3">
+            <label for="event" class="form-label">Event:</label>
+            <input type="text" class="form-control"id="event" placeholder="Description">
+        </div>
+        <div class="mb-3">
+            <label for="deadline" class="form-label">Deadline:</label>
+            <input type="date" class="form-control" id="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Event</button>
     </div>
-    
-    <h1>{{course.name}}</h1>
+</form>
+
+<div class="container-sm">
     {% for i in events %}
-    <div>
-        <h3>{{i.description}}</h3>
-        <p>Due {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
-    </div>
+    <h3>{{i.description}}</h3>
+    <p>Due: {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
     {% endfor %}
-    
-</body>
-</html>
+</div>
+{% endblock %}
