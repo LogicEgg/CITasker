@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 
 {% block content%}
-<div>
-    <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
-        <input type="hidden" name="id" value="{{ course.id }}">
-        <input type="text" name="event" placeholder="Description">
-        <input type="text" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)">
-        <input type="submit" value="Add Item" class="button">
-    </form>
-</div>
-
 <h1>{{course.name}}</h1>
-{% for i in events %}
-<div>
+
+<form action="{{ url_for('api.add', id=course.id) }}" method="POST">
+        <input type="hidden" name="id" value="{{ course.id }}" required>
+        <div class="mb-3">
+            <label for="event" class="form-label">Event:</label>
+            <input type="text" class="form-control"id="event" placeholder="Description">
+        </div>
+        <div class="mb-3">
+            <label for="deadline" class="form-label">Deadline:</label>
+            <input type="date" class="form-control" id="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Event</button>
+    </div>
+</form>
+
+<div class="container-sm">
+    {% for i in events %}
     <h3>{{i.description}}</h3>
-    <p>Due {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
+    <p>Due: {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}
