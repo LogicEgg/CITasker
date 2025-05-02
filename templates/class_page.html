@@ -20,7 +20,7 @@
 <div class="container-sm">
     {% for i in events %}
     <h3>{{i.description}}</h3>
-    <p>Due: {{i.deadline.strftime('%A, %b %Y, %I:%M%p %Z')}}</p>
+    <p>Due: {{i.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}</p>
     {% endfor %}
 </div>
 {% endblock %}
