@@ -2,6 +2,7 @@ from db import db
 from app import app
 import sys
 import csv
+import os
 from models import Course, User, Event
 
 def create():
@@ -43,7 +44,7 @@ if __name__ == "__main__":
 
         if len(sys.argv) > 1:
             for command in sys.argv[1:]:
-                if "add_classes" in command:
+                if "add_classes" in command and command.split("-")[1] in os.listdir(os.getcwd()):
                     coms["add_classes"](command.split("-")[1])
                 elif command in coms:
                     coms[command]()
