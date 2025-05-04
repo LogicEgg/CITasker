@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('homepage') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('term_page') }}">Terms</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('term_classes', num=course.term) }}">Term {{course.term}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{course.name}}</li>
+    </ol>
+</nav>
 <h1>{{course.name}}</h1>
 
 <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
