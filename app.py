@@ -26,7 +26,7 @@ def term_classes(num):
     data = db.session.execute(select(Course).where(Course.term == num)).scalars()
     return render_template("classes.html", data=data, num=num)
 
-@app.route("/classes/<int:id>")
+@app.route("/classes/<int:id>", methods=["GET"])
 def class_page(id):
     course = db.session.execute(select(Course).where(Course.id == id)).scalar()
     events = db.session.execute(select(Event).where(Event.courseid == id)).scalars()

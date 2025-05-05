@@ -1,7 +1,9 @@
-from flask import Blueprint, request, render_template, url_for, redirect
+from flask import Blueprint, request, render_template, url_for, redirect, jsonify
 from datetime import datetime
 from db import db
-from models import Event
+from models import Event, Course
+from sqlalchemy import select
+
 import re
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -16,3 +18,30 @@ def add():
     db.session.add(Event(description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+' 11:59PM', '%Y-%m-%d %I:%M%p'), courseid=request.form.get('id')))
     db.session.commit()
     return redirect(url_for("class_page", id=request.form.get('id')))
+
+@api_bp.route("/edit/<int:eventid>", methods=["POST"])
+def edit(eventid):
+    if request.form.get('_method') == 'PUT':
+        to_edit = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
+        updated_data = request.form
+        if updated_data.get('event'):
+            to_edit.description = updated_data.get('event')
+        if updated_data.get('deadline'):
+            to_edit.deadline = datetime.strptime(updated_data.get('deadline')+' 11:59PM', '%Y-%m-%d %I:%M%p')
+        db.session.commit()
+        course = db.session.execute(select(Course).where(Course.id == to_edit.courseid)).scalar()
+        return redirect(url_for("class_page", id=course.id))
+    else:
+        return jsonify({"message": "Nice try."})
+    
+@api_bp.route("/delete/<int:eventid>", methods=["POST"])
+def delete(eventid):
+    if request.form.get('_method') == 'DELETE':
+        del_tgt = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
+        if del_tgt:
+            id_redirect = del_tgt.courseid
+            db.session.delete(del_tgt)
+            db.session.commit()
+            return redirect(url_for('class_page', id=id_redirect))
+    else:
+        return jsonify({"message": "Failed to delete."})
