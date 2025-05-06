@@ -2,18 +2,25 @@
 
 {% block content%}
 
-<h1>Dashboard</h1>
-
-    <h3>Upcoming Tasks</h3>
-    {% for procrastinated in upcoming %}
-    <div class="list-group">
-        <a href="{{ url_for('class_page', id=procrastinated.courseid) }}"
-            class="list-group-item list-group-item-action list-group-item-secondary">
-            {{procrastinated.description}}
-            <br>
-            Due: {{procrastinated.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}
-        </a>
+<div class="row align-items-md-stretch">
+    <div class="col p-4 mb-4 mt-4 border rounded-3 m-2 overflow-auto">
+        <div class="container-fluid">
+            <h3 class="fw-bold mb-3">Upcoming Tasks</h3>
+            {% for procrastinated in upcoming %}
+            <div class="list-group mb-2 overflow-auto">
+                <a href="{{ url_for('class_page', id=procrastinated.courseid) }}"
+                    class="list-group-item list-group-item-action list-group-item-secondary">
+                    {{procrastinated.description}}
+                    <br>
+                    Due: {{procrastinated.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
+    <div class="col p-4 mb-4 mt-4 border rounded-3 m-2">
+        
+    </div>
+</div>
 
 {% endblock %}
