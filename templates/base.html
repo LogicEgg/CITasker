@@ -4,17 +4,9 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>CITasker</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
-            crossorigin="anonymous"
-        />
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-            crossorigin="anonymous"
-        ></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
+        </script>
         <style>
             .h-300 {
                 height: 300px;
@@ -32,29 +24,20 @@
                 data-bs-theme="light"
             >
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="{{ url_for('homepage')}}"
-                        >CITasker</a
-                    >
-                    <div
-                        class="collapse navbar-collapse"
-                        id="navbarNavAltMarkup"
-                    >
+                    <a class="navbar-brand" href="{{ url_for('homepage')}}">CITasker</a>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a
-                                class="nav-link text-secondary {% if request.endpoint == 'term_page' %}active text-dark border-bottom border-dark{% endif %}"
-                                href="{{ url_for('term_page')}}"
-                                >Terms</a
-                            >
-                            <a
-                                class="nav-link text-secondary {% if request.endpoint == 'wip1' %}active text-dark border-bottom border-dark{% endif %}"
+                            <a class="nav-link" href="{{ url_for('term_page')}}">Terms</a>
+                            <!-- <a
+                                class="nav-link {% if request.endpoint == 'wip1' %}active text-dark border-bottom border-dark{% endif %}"
                                 href="#"
                                 >WIP</a
                             >
                             <a
-                                class="nav-link text-secondary {% if request.endpoint == 'wip2' %}active text-dark border-bottom border-dark{% endif %}"
+                                class="nav-link {% if request.endpoint == 'wip2' %}active text-dark border-bottom border-dark{% endif %}"
                                 href="#"
                                 >WIP</a
-                            >
+                            > -->
                         </div>
                     </div>
                 </div>
