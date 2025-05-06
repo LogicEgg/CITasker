@@ -2,12 +2,18 @@
 
 {% block content%}
 
-<h1>Upcoming Tasks</h1>
-{% for procrastinated in upcoming %}
-<div style="background-color: #FFDE21; border-style: solid; border-radius: 6px; margin-top: 5px;">
-<p><a style="font-weight: 800; color: #069494;" href="{{ url_for('class_page', id=procrastinated.courseid) }}">{{procrastinated.description}}</a></p>
-<p>{{procrastinated.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}</p>
-</div>
-{% endfor %}
+<h1>Dashboard</h1>
+
+    <h3>Upcoming Tasks</h3>
+    {% for procrastinated in upcoming %}
+    <div class="list-group">
+        <a href="{{ url_for('class_page', id=procrastinated.courseid) }}"
+            class="list-group-item list-group-item-action list-group-item-secondary">
+            {{procrastinated.description}}
+            <br>
+            Due: {{procrastinated.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}
+        </a>
+    </div>
+    {% endfor %}
 
 {% endblock %}
