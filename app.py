@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from pathlib import Path
 from db import db
 from sqlalchemy import select
