@@ -33,8 +33,8 @@
             <h3 class="mb-4 mt-2">{{i.description}}</h3>
             <div class="d-flex justify-content-between">
                 <p>Due: {{i.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}</p>
-                <div class="d-grid gap-2 d-md-block">
-                    <form action="{{ url_for('api.delete', eventid=i.id) }}" method="POST">
+                <form action="{{ url_for('api.delete', eventid=i.id) }}" method="POST">
+                    <div class="d-grid gap-2 d-md-block">
                         <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#{{i.id}}" aria-expanded="false" aria-controls="{{i.id}}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -51,8 +51,8 @@
                                     d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                             </svg>
                         </button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
             <div class="collapse mt-1" id="{{ i.id }}">
                 <div class="card card-body">
@@ -69,6 +69,7 @@
                                 placeholder="Updated Deadline (YYYY-MM-DD, HH:MM)">
                         </div>
                         <button type="submit" class="btn btn-primary">Edit Event</button>
+                    </form>
                 </div>
             </div>
         </div>
