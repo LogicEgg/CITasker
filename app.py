@@ -13,18 +13,22 @@ app.register_blueprint(api_bp)
 
 db.init_app(app)
 
+
 @app.route("/")
 def homepage():
     return render_template("index.html")
+
 
 @app.route("/terms")
 def term_page():
     return render_template("terms.html")
 
+
 @app.route("/terms/<int:num>")
 def term_classes(num):
     data = db.session.execute(select(Course).where(Course.term == num)).scalars()
     return render_template("classes.html", data=data, num=num)
+
 
 @app.route("/classes/<int:id>", methods=["GET"])
 def class_page(id):
@@ -32,5 +36,6 @@ def class_page(id):
     events = db.session.execute(select(Event).where(Event.courseid == id)).scalars()
     return render_template("class_page.html", course=course, events=events)
 
+
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=3000, host="0.0.0.0")
