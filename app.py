@@ -4,6 +4,7 @@ from db import db
 from sqlalchemy import select
 from models import Course, Event
 from routes import api_bp
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
@@ -16,7 +17,8 @@ db.init_app(app)
 
 @app.route("/")
 def homepage():
-    return render_template("index.html")
+    urgent = db.session.execute(select(Event).where(Event.deadline < datetime.now() + timedelta(days=4))).scalars()
+    return render_template("index.html", upcoming=urgent)
 
 
 @app.route("/terms")
