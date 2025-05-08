@@ -15,13 +15,20 @@ def add():
         # db.session.add(Event(description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline'), '%Y-%m-%d %H:%M%p'), courseid=request.form.get('id')))
     # else:
         # db.session.add(Event(description=request.form.get('event'), courseid=request.form.get('id')))
-    db.session.add(Event(description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+' 11:59PM', '%Y-%m-%d %I:%M%p'), courseid=request.form.get('id')))
-    db.session.commit()
-    return redirect(url_for("class_page", id=request.form.get('id')))
+    date_format = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+    string_check = lambda event: type(event) is str and event != ""
+    date_check = lambda deadline: date_format.match(deadline)
+    int_check = lambda id: id.isnumeric()
+    if string_check(request.form.get('event')) and date_check(request.form.get('deadline')) and int_check(request.form.get('id')):
+        db.session.add(Event(description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+' 11:59PM', '%Y-%m-%d %I:%M%p'), courseid=request.form.get('id')))
+        db.session.commit()
+        return redirect(url_for("class_page", id=request.form.get('id')))
+    else:
+        return {"message": "Bad data"}, 400
 
 @api_bp.route("/edit/<int:eventid>", methods=["POST"])
 def edit(eventid):
-    if request.form.get('_method') == 'PUT':
+    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
         to_edit = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
         updated_data = request.form
         if updated_data.get('event'):
@@ -32,7 +39,7 @@ def edit(eventid):
         course = db.session.execute(select(Course).where(Course.id == to_edit.courseid)).scalar()
         return redirect(url_for("class_page", id=course.id))
     else:
-        return jsonify({"message": "Nice try."})
+        return {"message": "Nice try."}, 400
     
 @api_bp.route("/delete/<int:eventid>", methods=["POST"])
 def delete(eventid):
@@ -44,8 +51,18 @@ def delete(eventid):
             db.session.commit()
             return redirect(url_for('class_page', id=id_redirect))
     else:
-        return jsonify({"message": "Failed to delete."})
-
+        return {"message": "Failed to delete."}, 400
+    
 @api_bp.route("/complete/<int:eventid>", methods=["POST"])
 def complete(eventid):
-    pass
+    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
+        finish = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
+        if not finish.completed:
+            finish.completed = True
+        else:
+            finish.completed = False
+        db.session.commit()
+        class_redirect = db.session.execute(select(Course).where(Course.id == finish.courseid)).scalar()
+        return redirect(url_for('class_page', id=class_redirect.id))
+    else:
+        return {"message": "Failed to complete."}, 400

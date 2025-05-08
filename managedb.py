@@ -4,6 +4,7 @@ import sys
 import csv
 import os
 from models import Course, User, Event
+from sqlalchemy import select
 
 def create():
     db.create_all()
@@ -21,9 +22,22 @@ def classes_file(csvfile):
         db.session.commit()
     print("Classes added.")
 
-def sample_events():
-    db.session.add(Event(description="Some event.", courseid=1, userid=1))
+def sample_events(description="Some Event", course=1, user=1):
+    if type(description) != str or type(course) != int:
+        raise ValueError("Invalid data type")
+    db.session.add(Event(description=description, courseid=course, userid=user))
     db.session.commit()
+
+def kill_event(description):
+    if type(description) != str:
+        raise ValueError("Description should be a string")
+    target = db.session.execute(select(Event).where(Event.description == description)).scalar()
+    if not target:
+        return "Event not found"
+    else:
+        db.session.delete(target)
+        db.session.commit()
+        return "Event killed"
 
 def fake_user():
     alice = User(uname="Alice")

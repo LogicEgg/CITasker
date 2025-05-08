@@ -29,13 +29,18 @@
 
     <div class="list-group list-group-flush">
     {% for i in events %}
+        {% if i.completed %}
+        <div class="list-group-item flex-fill" style="background-color: greenyellow;">
+        {% else %}
         <div class="list-group-item flex-fill">
+        {% endif %}
             <h3 class="mb-4 mt-2">{{i.description}}</h3>
             <div class="d-flex justify-content-between">
                 <p>Due: {{i.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}</p>
                 <div class="d-grid gap-1 d-md-flex">
                     <form action="{{ url_for('api.complete', eventid=i.id) }}" method="POST">
                         <button class="btn btn-success" type="submit">
+                            <input type="hidden" name="_method" value="PUT">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-check-lg" viewBox="0 0 16 16">
                                 <path
