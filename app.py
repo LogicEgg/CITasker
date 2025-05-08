@@ -16,7 +16,7 @@ db.init_app(app)
 
 @app.route("/")
 def homepage():
-    urgent = db.session.execute(select(Event).where(Event.deadline < datetime.now() + timedelta(days=4))).scalars()
+    urgent = [i for i in db.session.execute(select(Event).where(Event.deadline < datetime.now() + timedelta(days=4))).scalars()]
     return render_template("index.html", upcoming=urgent)
 
 @app.route("/terms")
