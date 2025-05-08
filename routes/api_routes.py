@@ -28,7 +28,7 @@ def add():
 
 @api_bp.route("/edit/<int:eventid>", methods=["POST"])
 def edit(eventid):
-    if request.form.get('_method') == 'PUT':
+    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
         to_edit = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
         updated_data = request.form
         if updated_data.get('event'):
@@ -39,7 +39,7 @@ def edit(eventid):
         course = db.session.execute(select(Course).where(Course.id == to_edit.courseid)).scalar()
         return redirect(url_for("class_page", id=course.id))
     else:
-        return jsonify({"message": "Nice try."})
+        return {"message": "Nice try."}, 400
     
 @api_bp.route("/delete/<int:eventid>", methods=["POST"])
 def delete(eventid):
@@ -51,4 +51,18 @@ def delete(eventid):
             db.session.commit()
             return redirect(url_for('class_page', id=id_redirect))
     else:
-        return jsonify({"message": "Failed to delete."})
+        return {"message": "Failed to delete."}, 400
+    
+@api_bp.route("/complete/<int:eventid>", methods=["POST"])
+def complete(eventid):
+    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
+        finish = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
+        if not finish.completed:
+            finish.completed = True
+        else:
+            finish.completed = False
+        db.session.commit()
+        class_redirect = db.session.execute(select(Course).where(Course.id == finish.courseid)).scalar()
+        return redirect(url_for('class_page', id=class_redirect.id))
+    else:
+        return {"message": "Failed to complete."}, 400
