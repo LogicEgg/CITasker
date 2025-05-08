@@ -45,3 +45,7 @@ def delete(eventid):
             return redirect(url_for('class_page', id=id_redirect))
     else:
         return jsonify({"message": "Failed to delete."})
+
+@api_bp.route("/complete/<int:eventid>", methods=["POST"])
+def complete(eventid):
+    pass
