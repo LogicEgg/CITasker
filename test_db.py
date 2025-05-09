@@ -23,6 +23,22 @@ def test_add_api(client):
     assert b"Bad data" in response.data
     assert response.status_code == 400
 
+def test_edit_succ(client):
+    response = client.post("/api/edit/13", data={
+        "_method": "PUT",
+        "id": 13,
+        "event": "NEW DESCRIPTION"
+    })
+    assert response.status_code == 302
+    assert db.session.execute(select(Event).where(Event.description == "NEW DESCRIPTION"))
+
+def test_edit_fail(client):
+    response = client.post("/api/edit/999", data={
+        "id": 999,
+        "event": "NEW DESCRIPTION"
+    })
+    assert response.status_code == 400
+
 def test_delete_api(client):
     response = client.post("/api/delete/999")
     assert b"Failed to delete" in response.data
