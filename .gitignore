@@ -3,3 +3,7 @@ __pycache__/
 routes/__pycache__/
 
 events.db
+
+routes/__pycache__/__init__.cpython-312.pyc
+
+routes/__pycache__/api_routes.cpython-312.pyc
