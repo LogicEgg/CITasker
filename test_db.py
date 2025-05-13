@@ -24,9 +24,9 @@ def test_add_api(client):
     assert response.status_code == 400
 
 def test_edit_succ(client):
-    response = client.post("/api/edit/13", data={
+    response = client.post("/api/edit/16", data={
         "_method": "PUT",
-        "id": 13,
+        "id": 16,
         "event": "NEW DESCRIPTION"
     })
     assert response.status_code == 302
@@ -37,12 +37,19 @@ def test_edit_fail(client):
         "id": 999,
         "event": "NEW DESCRIPTION"
     })
+    assert b'Nice try.' in response.data
     assert response.status_code == 400
 
 def test_delete_api(client):
     response = client.post("/api/delete/999")
     assert b"Failed to delete" in response.data
-    assert response.status_code == 400
+    assert response.status_code == 404
+
+def test_complete_api(client):
+    response = client.post("/api/complete/16", data={
+        "_method": "PUT"
+    })
+    assert response.status_code == 302
 
 def test_add():
     with app.app_context():

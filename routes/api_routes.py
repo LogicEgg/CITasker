@@ -29,7 +29,7 @@ def add():
 
 @api_bp.route("/edit/<int:eventid>", methods=["POST"])
 def edit(eventid):
-    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
+    if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar() and (request.form.get('event') or request.form.get('deadline')):
         to_edit = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
         updated_data = request.form
         if updated_data.get('event') and string_check(updated_data.get('event')):
@@ -52,7 +52,7 @@ def delete(eventid):
             db.session.commit()
             return redirect(url_for('class_page', id=id_redirect))
     else:
-        return {"message": "Failed to delete."}, 400
+        return {"message": "Failed to delete."}, 404
     
 @api_bp.route("/complete/<int:eventid>", methods=["POST"])
 def complete(eventid):
