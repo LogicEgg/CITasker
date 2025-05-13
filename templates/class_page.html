@@ -13,19 +13,26 @@
     </nav>
 
     <h1>{{course.name}}</h1>
-
-    <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
-        <input type="hidden" name="id" value="{{ course.id }}" required>
-        <div class="mb-3">
-            <label for="event" class="form-label">Event:</label>
-            <input type="text" class="form-control" name="event" placeholder="Description" required>
-        </div>
-        <div class="mb-3">
-            <label for="deadline" class="form-label">Deadline:</label>
-            <input type="date" class="form-control" name="deadline" placeholder="Deadline (YYYY-MM-DD, HH:MM)" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Event</button>
-    </form>
+    <div class="mb-3">
+        <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
+            <input type="hidden" name="id" value="{{ course.id }}" required>
+            <div class="mb-3">
+                <label for="event" class="form-label">Event:</label>
+                <input type="text" class="form-control" name="event" placeholder="Description" required>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="deadline" class="form-label">Deadline:</label>
+                    <input type="date" class="form-control" name="deadline" placeholder="Deadline (YYYY-MM-DD)" required>
+                </div>
+                <div class="col ">
+                    <label for="due_time" class="form-label">Time Due:</label>
+                    <input type="time" class="form-control" name="due_time" placeholder="Time Due (HH:MM AM/PM)" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Add Event</button>
+        </form>
+    </div>
 
     <div class="list-group list-group-flush">
     {% for i in events %}
