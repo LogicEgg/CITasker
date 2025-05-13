@@ -17,6 +17,7 @@ db.init_app(app)
 
 @app.route("/")
 def homepage():
+    events = [i for i in db.session.execute(select(Event)).scalars()]
     urgent = [i for i in db.session.execute(select(Event).where(Event.deadline < datetime.now() + timedelta(days=4))).scalars() if not i.completed]
     complete = [i for i in db.session.execute(select(Event).where(Event.completed)).scalars()]
     start = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
@@ -24,7 +25,9 @@ def homepage():
     due = [i for i in db.session.execute(select(Event).where(Event.deadline <= end).where(Event.deadline >= start)).scalars() if not i.completed]
     overdue = [i for i in db.session.execute(select(Event).where(Event.deadline < start)).scalars() if not i.completed]
     urgent.sort(key=operator.attrgetter('deadline'))
-    return render_template("index.html", upcoming=urgent, completed=complete, today=due, overdue=overdue)
+    completion_percentage = round(len(complete) / len(events) * 100)
+    print(completion_percentage)
+    return render_template("index.html", upcoming=urgent, completed=complete, today=due, overdue=overdue, percent=completion_percentage)
 
 @app.route("/terms")
 def term_page():
