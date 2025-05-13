@@ -2,3 +2,5 @@ flask
 sqlalchemy
 flask-sqlalchemy
 pytest
+flask_login
+hashlib
