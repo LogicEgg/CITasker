@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
-{% block content%}
 
+{% block content%}
+{% if user %}
+<p>Hello {{ user.uname }}</p>
+{% endif %}
 <div class="row align-items-md-stretch">
     <div class="col p-4 mb-4 mt-4 border rounded-3 m-2">
         <div class="container-fluid">
