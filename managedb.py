@@ -5,7 +5,7 @@ import csv
 import os
 from models import Course, User, Event
 import hashlib
-from config import pass1, pass2
+from config import pass1, pass2, SALT
 from sqlalchemy import select
 
 def create():
@@ -42,8 +42,8 @@ def kill_event(description):
         return "Event killed"
 
 def fake_user():
-    alice = User(uname="Alice", passwd=str(hashlib.sha256(pass1.encode()).hexdigest()))
-    bob = User(uname="Bob", passwd=str(hashlib.sha256(pass2.encode()).hexdigest()))
+    alice = User(uname="Alice", passwd=str(hashlib.sha256((pass1+SALT).encode()).hexdigest()))
+    bob = User(uname="Bob", passwd=str(hashlib.sha256((pass2+SALT).encode()).hexdigest()))
     db.session.add(alice)
     db.session.add(bob)
     db.session.commit()

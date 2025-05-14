@@ -24,9 +24,9 @@ def test_add_api(client):
     assert response.status_code == 400
 
 def test_edit_succ(client):
-    response = client.post("/api/edit/16", data={
+    response = client.post("/api/edit/2", data={
         "_method": "PUT",
-        "id": 16,
+        "id": 2,
         "event": "NEW DESCRIPTION"
     })
     assert response.status_code == 302
@@ -46,7 +46,7 @@ def test_delete_api(client):
     assert response.status_code == 404
 
 def test_complete_api(client):
-    response = client.post("/api/complete/16", data={
+    response = client.post("/api/complete/2", data={
         "_method": "PUT"
     })
     assert response.status_code == 302
