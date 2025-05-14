@@ -4,6 +4,7 @@ import sys
 import csv
 import os
 from models import Course, User, Event
+from pathlib import Path
 import hashlib
 from config import pass1, pass2, SALT
 from sqlalchemy import select
@@ -67,4 +68,7 @@ if __name__ == "__main__":
                 else:
                     print(f"Available commands are {coms.keys()}")
         else:
-            print("You need to provide at least 1 command.")
+            if "events.db" not in os.listdir(Path(".").resolve()):
+                create()
+                fake_user()
+                classes_file()
