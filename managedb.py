@@ -42,8 +42,8 @@ def kill_event(description):
         return "Event killed"
 
 def fake_user():
-    alice = User(uname="Alice", passwd=str(hashlib.md5(pass1.encode()).hexdigest()))
-    bob = User(uname="Bob", passwd=str(hashlib.md5(pass2.encode()).hexdigest()))
+    alice = User(uname="Alice", passwd=str(hashlib.sha256(pass1.encode()).hexdigest()))
+    bob = User(uname="Bob", passwd=str(hashlib.sha256(pass2.encode()).hexdigest()))
     db.session.add(alice)
     db.session.add(bob)
     db.session.commit()
