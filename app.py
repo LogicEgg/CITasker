@@ -40,6 +40,7 @@ def term_page():
     return render_template("terms.html")
 
 @app.route("/terms/<int:num>")
+@login_required
 def term_classes(num):
     data = db.session.execute(select(Course).where(Course.term == num)).scalars()
     return render_template("classes.html", data=data, num=num)
