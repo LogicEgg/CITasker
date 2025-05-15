@@ -61,7 +61,23 @@
         </div>
         <div class="col">
             <div class="p-4 border rounded-3 h-100">
-                <h3 class="fw-bold mb-3">WIP</h3>
+                <h3 class="fw-bold mb-3">Overdue</h3>
+                    {% if overdue|length > 0 %}
+                    {% for tsktsk in overdue %}
+                    <div class="list-group mb-2 overflow-auto" style="overflow-x: scroll;">
+                        <div class="list-group-item p-0">
+                            <a href="{{ url_for('class_page', id=tsktsk.courseid) }}"
+                                class="list-group-item list-group-item-action list-group-item-secondary" style="color: red;">
+                                {{tsktsk.description}}
+                                <br>
+                                Due: {{tsktsk.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="secondary">Nothing overdue. 👍</p>
+                    {% endif %}
                 {# <div class="progress-stacked mb-3">
                     <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="15"
                         aria-valuemin="0" aria-valuemax="100" style="width: 15%">

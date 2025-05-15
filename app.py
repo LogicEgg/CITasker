@@ -24,7 +24,7 @@ db.init_app(app)
 @app.route("/")
 @login_required
 def homepage():
-    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline < datetime.now() + timedelta(days=4), Event.completed == False, Event.userid == current_user.id))).scalars()]
+    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < datetime.now() + timedelta(days=4), Event.completed == False, Event.userid == current_user.id))).scalars()]
     urgent.sort(key=operator.attrgetter('deadline'))
     complete = [i for i in db.session.execute(select(Event).where(and_(Event.completed, Event.userid == current_user.id))).scalars()]
     events = [i for i in db.session.execute(select(Event).where(and_(Event.userid == current_user.id))).scalars()]
