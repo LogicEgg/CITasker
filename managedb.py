@@ -71,4 +71,4 @@ if __name__ == "__main__":
             if "events.db" not in os.listdir(Path(".").resolve()):
                 create()
                 fake_user()
-                classes_file()
+                classes_file("classes.csv")

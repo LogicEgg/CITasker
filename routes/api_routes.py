@@ -1,8 +1,9 @@
-from flask import Blueprint, request, render_template, url_for, redirect, jsonify
+from flask import Blueprint, request, render_template, url_for, redirect
 from datetime import datetime
 from db import db
 from models import Event, Course
 from sqlalchemy import select
+from flask_login import login_required
 
 import re
 
@@ -14,6 +15,7 @@ date_check = lambda deadline: date_format.match(deadline)
 int_check = lambda id: id.isnumeric()
 
 @api_bp.route("/add", methods=["POST"])
+@login_required
 def add():
     # date_format = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}(AM|PM)$")
     # if request.form.get('deadline') and date_format.match(request.form.get('deadline')) and request.form.get('event'):
@@ -29,6 +31,7 @@ def add():
         return {"message": "Bad data"}, 400
 
 @api_bp.route("/edit/<int:eventid>", methods=["POST"])
+@login_required
 def edit(eventid):
     if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar() and (request.form.get('event') or request.form.get('deadline')):
         to_edit = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
@@ -44,6 +47,7 @@ def edit(eventid):
         return {"message": "Nice try."}, 400
     
 @api_bp.route("/delete/<int:eventid>", methods=["POST"])
+@login_required
 def delete(eventid):
     if request.form.get('_method') == 'DELETE':
         del_tgt = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
@@ -56,6 +60,7 @@ def delete(eventid):
         return {"message": "Failed to delete."}, 404
     
 @api_bp.route("/complete/<int:eventid>", methods=["POST"])
+@login_required
 def complete(eventid):
     if request.form.get('_method') == 'PUT' and db.session.execute(select(Event).where(Event.id == eventid)).scalar():
         finish = db.session.execute(select(Event).where(Event.id == eventid)).scalar()
