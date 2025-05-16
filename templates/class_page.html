@@ -98,9 +98,18 @@
                             placeholder="Updated Description">
                         </div>
                         <div class="mb-3">
-                            <label for="deadline" class="form-label">Deadline:</label>
-                            <input type="date" class="form-control" name="deadline"
-                            placeholder="Updated Deadline (YYYY-MM-DD, HH:MM)">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="deadline" class="form-label">Deadline:</label>
+                                    <input type="date" class="form-control" name="deadline"
+                                    placeholder="Updated Deadline (YYYY-MM-DD, HH:MM)">
+                                </div>
+                                <div class="col">
+                                    <label for="time" class="form-label">Time Due:</label>
+                                    <input type="time" class="form-control" name="time"
+                                    placeholder="Updated Time Due (HH:MM)">
+                                </div>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Edit Event</button>
                     </form>
