@@ -33,7 +33,7 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for class in data %}
         <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm hover-shadow transition">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <h5 class="card-title mb-0">{{ class.name }}</h5>
@@ -44,7 +44,7 @@
                         course.
                     </p> -->
                     <div class="d-grid">
-                        <a href="{{ url_for('class_page', id=class.id) }}" class="btn btn-outline-primary">View Tasks
+                        <a href="{{ url_for('class_page', id=class.id) }}" class="btn btn-outline-primary rounded-pill">View Tasks
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
