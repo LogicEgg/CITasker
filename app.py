@@ -52,7 +52,7 @@ def homepage():
     now = datetime.now()
     first_day = now.replace(day=1)
     last_day = now.replace(month=now.month + 1, day=1) - timedelta(days=1)
-    first_weekday = first_day.weekday()
+    first_weekday = (first_day.weekday() + 1) % 7  # Adjust to make Sunday = 0
     total_days = last_day.day
 
     # Create calendar grid
