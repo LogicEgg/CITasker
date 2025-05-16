@@ -4,6 +4,9 @@ import sys
 import csv
 import os
 from models import Course, User, Event
+from pathlib import Path
+import hashlib
+from config import pass1, pass2, SALT
 from sqlalchemy import select
 
 def create():
@@ -40,8 +43,8 @@ def kill_event(description):
         return "Event killed"
 
 def fake_user():
-    alice = User(uname="Alice")
-    bob = User(uname="Bob")
+    alice = User(uname="Alice", passwd=str(hashlib.sha256((pass1+SALT).encode()).hexdigest()))
+    bob = User(uname="Bob", passwd=str(hashlib.sha256((pass2+SALT).encode()).hexdigest()))
     db.session.add(alice)
     db.session.add(bob)
     db.session.commit()
@@ -65,4 +68,7 @@ if __name__ == "__main__":
                 else:
                     print(f"Available commands are {coms.keys()}")
         else:
-            print("You need to provide at least 1 command.")
+            if "events.db" not in os.listdir(Path(".").resolve()):
+                create()
+                fake_user()
+                classes_file("classes.csv")

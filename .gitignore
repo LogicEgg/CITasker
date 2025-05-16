@@ -3,3 +3,7 @@ __pycache__/
 routes/__pycache__/
 
 events.db
+
+config.py
+
+.venv
