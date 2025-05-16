@@ -24,6 +24,12 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link" href="{{ url_for('term_page')}}">Terms</a>
+                            {% if current_user.uname %}
+                            <a class="nav-link" href="{{ url_for('auth.logout' )}}">Log Out</a>
+                            {% else %}
+                            <a class="nav-link" href="{{ url_for('auth.login' )}}">Log In</a>
+                            <a class="nav-link" href="{{ url_for('auth.register' )}}">Register</a>
+                            {% endif %}
                             <!-- <a
                                 class="nav-link {% if request.endpoint == 'wip1' %}active text-dark border-bottom border-dark{% endif %}"
                                 href="#"
