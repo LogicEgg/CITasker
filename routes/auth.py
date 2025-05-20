@@ -4,8 +4,11 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from models import User
 from sqlalchemy import select, and_
 from .api_routes import string_check
-from config import SALT
+# from config import SALT
 import hashlib
+from os import environ
+
+SALT = environ.get("SALT", "123456")
 
 login_manager = LoginManager()
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")

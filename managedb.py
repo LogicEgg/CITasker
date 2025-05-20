@@ -6,8 +6,13 @@ import os
 from models import Course, User, Event
 from pathlib import Path
 import hashlib
-from config import pass1, pass2, SALT
+# from config import pass1, pass2, SALT
 from sqlalchemy import select
+from os import environ
+
+SALT = environ.get("SALT", "12345")
+pass1 = environ.get("pass1", "test")
+pass2 = environ.get("pass2", "test")
 
 def create():
     db.create_all()
@@ -26,13 +31,13 @@ def classes_file(csvfile):
     print("Classes added.")
 
 def sample_events(description="Some Event", course=1, user=1):
-    if type(description) != str or type(course) != int:
+    if type(description) is not str or type(course) is not int:
         raise ValueError("Invalid data type")
     db.session.add(Event(description=description, courseid=course, userid=user))
     db.session.commit()
 
 def kill_event(description):
-    if type(description) != str:
+    if type(description) is not str:
         raise ValueError("Description should be a string")
     target = db.session.execute(select(Event).where(Event.description == description)).scalar()
     if not target:
@@ -70,5 +75,5 @@ if __name__ == "__main__":
         else:
             if "events.db" not in os.listdir(Path(".").resolve()):
                 create()
-                fake_user()
+                # fake_user()
                 classes_file("classes.csv")
