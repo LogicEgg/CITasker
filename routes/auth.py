@@ -1,14 +1,13 @@
 from db import db
-from flask_login import LoginManager, login_user, current_user, logout_user
+from flask_login import LoginManager, login_user, logout_user
 from flask import Blueprint, render_template, request, redirect, url_for
 from models import User
 from sqlalchemy import select, and_
 from .api_routes import string_check
-# from config import SALT
 import hashlib
-from os import environ
+from os import environ, urandom
 
-SALT = environ.get("SALT", "123456")
+SALT = environ.get("SALT", urandom(16).hex())
 
 login_manager = LoginManager()
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")

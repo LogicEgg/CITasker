@@ -6,11 +6,10 @@ import os
 from models import Course, User, Event
 from pathlib import Path
 import hashlib
-# from config import pass1, pass2, SALT
 from sqlalchemy import select
 from os import environ
 
-SALT = environ.get("SALT", "12345")
+SALT = environ.get("SALT", os.urandom(16).hex())
 pass1 = environ.get("pass1", "test")
 pass2 = environ.get("pass2", "test")
 

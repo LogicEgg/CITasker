@@ -1,17 +1,15 @@
 from flask import Flask, render_template
 from flask_login import current_user, login_required
 from pathlib import Path
-# from config import SECRET_KEY
 from db import db
 from sqlalchemy import select, and_
 from models import Course, Event
 from routes import api_bp, auth_bp, login_manager
 from datetime import datetime, timedelta
 import operator
-from os import environ
+from os import environ, urandom
 
-
-SECRET_KEY = environ.get("SECRET_KEY", "1234567890")
+SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"

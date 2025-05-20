@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, url_for, redirect
+from flask import Blueprint, request, url_for, redirect
 from datetime import datetime
 from db import db
 from models import Event, Course
