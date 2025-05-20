@@ -41,7 +41,7 @@ def edit(eventid):
         if updated_data.get('event') and string_check(updated_data.get('event')):
             to_edit.description = updated_data.get('event')
         if updated_data.get('deadline') and date_check(updated_data.get('deadline')) and time_check(updated_data.get('due_time')):
-            to_edit.deadline = datetime.strptime(updated_data.get('deadline')+f' {request.form.get('due_time')}', '%Y-%m-%d %H:%M')
+            to_edit.deadline = datetime.strptime(updated_data.get('deadline')+f"{request.form.get('due_time')}", '%Y-%m-%d %H:%M')
         db.session.commit()
         course = db.session.execute(select(Course).where(Course.id == to_edit.courseid)).scalar()
         return redirect(url_for("class_page", id=course.id))
