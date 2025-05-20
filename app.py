@@ -15,6 +15,16 @@ SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
 SALT = environ.get("SALT", urandom(16).hex())
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = SECRET_KEY
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
+app.instance_path = Path(".").resolve()
+
+app.register_blueprint(api_bp)
+app.register_blueprint(auth_bp)
+
+login_manager.init_app(app)
+
+db.init_app(app)
 
 def create():
     db.create_all()
@@ -33,17 +43,6 @@ with app.app_context():
         create()
         classes_file("classes.csv")
 
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
-app.config["SECRET_KEY"] = SECRET_KEY
-app.instance_path = Path(".").resolve()
-
-app.register_blueprint(api_bp)
-app.register_blueprint(auth_bp)
-
-login_manager.init_app(app)
-
-db.init_app(app)
 
 @app.route("/")
 @login_required
