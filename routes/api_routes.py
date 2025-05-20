@@ -26,7 +26,7 @@ def add():
         # db.session.add(Event(description=request.form.get('event'), courseid=request.form.get('id')))
     if string_check(request.form.get('event')) and date_check(request.form.get('deadline')) and int_check(request.form.get('id')):
         print(request.form.get('due_time'))
-        db.session.add(Event(userid=request.form.get('userid'), description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+f' {request.form.get('due_time')}', '%Y-%m-%d %H:%M'), courseid=request.form.get('id')))
+        db.session.add(Event(userid=request.form.get('userid'), description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+f"{request.form.get('due_time')}", '%Y-%m-%d %H:%M'), courseid=request.form.get('id')))
         db.session.commit()
         return redirect(url_for("class_page", id=request.form.get('id')))
     else:
