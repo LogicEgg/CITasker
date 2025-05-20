@@ -13,11 +13,6 @@ SALT = environ.get("SALT", "123456")
 login_manager = LoginManager()
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-# class User(UserMixin):
-#     def __init__(self, id, uname):
-#         self.id = id
-#         self.uname = uname
-
 login_manager.login_view = "auth.login"
 
 @login_manager.user_loader
