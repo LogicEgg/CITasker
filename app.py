@@ -1,17 +1,22 @@
 from flask import Flask, render_template
 from flask_login import current_user, login_required
 from pathlib import Path
-from config import SECRET_KEY
 from db import db
 from sqlalchemy import select, and_
 from models import Course, Event
 from routes import api_bp, auth_bp, login_manager
 from datetime import datetime, timedelta
 import operator
+from os import environ, urandom, listdir
+import csv
+
+
+SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
+SALT = environ.get("SALT", urandom(16).hex())
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
 app.config["SECRET_KEY"] = SECRET_KEY
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
 app.instance_path = Path(".").resolve()
 
 app.register_blueprint(api_bp)
@@ -21,15 +26,33 @@ login_manager.init_app(app)
 
 db.init_app(app)
 
+def create():
+    db.create_all()
+    print("Tables created.")
+
+def classes_file(csvfile):
+    with open(csvfile) as classes:
+        data = csv.DictReader(classes)
+        for line in data:
+            db.session.add(Course(name=line["coursename"], term=int(line["term"])))
+        db.session.commit()
+    print("Classes added.")
+
+with app.app_context():
+    if "events.db" not in listdir(Path(".").resolve()):
+        create()
+        classes_file("classes.csv")
+
+
 @app.route("/")
 @login_required
 def homepage():
-    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < datetime.now() + timedelta(days=4), Event.completed == False, Event.userid == current_user.id))).scalars()]
+    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < datetime.now() + timedelta(days=4), Event.completed is False, Event.userid == current_user.id))).scalars()]
     urgent.sort(key=operator.attrgetter('deadline'))
     complete = [i for i in db.session.execute(select(Event).where(and_(Event.completed, Event.userid == current_user.id))).scalars()]
     events = [i for i in db.session.execute(select(Event).where(and_(Event.userid == current_user.id))).scalars()]
-    due = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < (datetime.now() + timedelta(days=1)), Event.completed == False, Event.userid == current_user.id))).scalars()]
-    overdue = [i for i in db.session.execute(select(Event).where(and_(Event.deadline < datetime.now(), Event.completed == False, Event.userid == current_user.id))).scalars()]
+    due = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < (datetime.now() + timedelta(days=1)), Event.completed is False, Event.userid == current_user.id))).scalars()]
+    overdue = [i for i in db.session.execute(select(Event).where(and_(Event.deadline < datetime.now(), Event.completed is False, Event.userid == current_user.id))).scalars()]
     completion_percentage = 100
     if len(events) > 0:
         completion_percentage = round(len(complete)/len(events)*100)
@@ -52,6 +75,3 @@ def class_page(id):
     events = [i for i in db.session.execute(select(Event).where(and_(Event.courseid == id, Event.userid == current_user.id))).scalars()]
     events.sort(key=operator.attrgetter('deadline'))
     return render_template("class_page.html", course=course, events=events, user=current_user)
-
-if __name__ == "__main__":
-    app.run(debug=True, port=3000)

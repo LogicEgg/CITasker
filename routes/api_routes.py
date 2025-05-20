@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, url_for, redirect
+from flask import Blueprint, request, url_for, redirect
 from datetime import datetime
 from db import db
 from models import Event, Course
@@ -26,7 +26,7 @@ def add():
         # db.session.add(Event(description=request.form.get('event'), courseid=request.form.get('id')))
     if string_check(request.form.get('event')) and date_check(request.form.get('deadline')) and int_check(request.form.get('id')):
         print(request.form.get('due_time'))
-        db.session.add(Event(userid=request.form.get('userid'), description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+f' {request.form.get('due_time')}', '%Y-%m-%d %H:%M'), courseid=request.form.get('id')))
+        db.session.add(Event(userid=request.form.get('userid'), description=request.form.get('event'), deadline=datetime.strptime(request.form.get('deadline')+f"{request.form.get('due_time')}", '%Y-%m-%d %H:%M'), courseid=request.form.get('id')))
         db.session.commit()
         return redirect(url_for("class_page", id=request.form.get('id')))
     else:
@@ -41,7 +41,7 @@ def edit(eventid):
         if updated_data.get('event') and string_check(updated_data.get('event')):
             to_edit.description = updated_data.get('event')
         if updated_data.get('deadline') and date_check(updated_data.get('deadline')) and time_check(updated_data.get('due_time')):
-            to_edit.deadline = datetime.strptime(updated_data.get('deadline')+f' {request.form.get('due_time')}', '%Y-%m-%d %H:%M')
+            to_edit.deadline = datetime.strptime(updated_data.get('deadline')+f"{request.form.get('due_time')}", '%Y-%m-%d %H:%M')
         db.session.commit()
         course = db.session.execute(select(Course).where(Course.id == to_edit.courseid)).scalar()
         return redirect(url_for("class_page", id=course.id))
