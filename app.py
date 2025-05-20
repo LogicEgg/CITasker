@@ -10,10 +10,11 @@ import operator
 from os import environ, urandom, listdir
 import csv
 
-SALT = environ.get("SALT", urandom(16).hex())
-pass1 = environ.get("pass1", "test")
-pass2 = environ.get("pass2", "test")
 
+SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
+SALT = environ.get("SALT", urandom(16).hex())
+
+app = Flask(__name__)
 
 def create():
     db.create_all()
@@ -27,15 +28,12 @@ def classes_file(csvfile):
         db.session.commit()
     print("Classes added.")
 
-if "events.db" not in listdir(Path(".").resolve()):
-    create()
-    # fake_user()
-    classes_file("classes.csv")
+with app.app_context():
+    if "events.db" not in listdir(Path(".").resolve()):
+        create()
+        classes_file("classes.csv")
 
 
-SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
-
-app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///events.db"
 app.config["SECRET_KEY"] = SECRET_KEY
 app.instance_path = Path(".").resolve()
