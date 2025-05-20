@@ -31,6 +31,8 @@ jobs:
       - name: Create db
         run: |
           python managedb.py
+          python managedb.py add_usrs
+          python managedb.py add_events
       - name: Test with pytest
         run: |
           pytest
