@@ -47,12 +47,12 @@ with app.app_context():
 @app.route("/")
 @login_required
 def homepage():
-    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < datetime.now() + timedelta(days=4), Event.completed is False, Event.userid == current_user.id))).scalars()]
+    urgent = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < datetime.now() + timedelta(days=4), Event.completed == False, Event.userid == current_user.id))).scalars()]
     urgent.sort(key=operator.attrgetter('deadline'))
     complete = [i for i in db.session.execute(select(Event).where(and_(Event.completed, Event.userid == current_user.id))).scalars()]
     events = [i for i in db.session.execute(select(Event).where(and_(Event.userid == current_user.id))).scalars()]
-    due = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < (datetime.now() + timedelta(days=1)), Event.completed is False, Event.userid == current_user.id))).scalars()]
-    overdue = [i for i in db.session.execute(select(Event).where(and_(Event.deadline < datetime.now(), Event.completed is False, Event.userid == current_user.id))).scalars()]
+    due = [i for i in db.session.execute(select(Event).where(and_(Event.deadline > datetime.now(), Event.deadline < (datetime.now() + timedelta(days=1)), Event.completed == False, Event.userid == current_user.id))).scalars()]
+    overdue = [i for i in db.session.execute(select(Event).where(and_(Event.deadline < datetime.now(), Event.completed == False, Event.userid == current_user.id))).scalars()]
     completion_percentage = 100
     if len(events) > 0:
         completion_percentage = round(len(complete)/len(events)*100)
