@@ -10,8 +10,8 @@ from sqlalchemy import select
 from os import environ
 
 SALT = environ.get("SALT", os.urandom(16).hex())
-pass1 = environ.get("pass1", "test")
-pass2 = environ.get("pass2", "test")
+pass1 = environ.get("pass1", os.urandom(10).hex())
+pass2 = environ.get("pass2", os.urandom(10).hex())
 
 def create():
     db.create_all()
@@ -33,7 +33,9 @@ def sample_events(description="Some Event", course=1, user=1):
     if type(description) is not str or type(course) is not int:
         raise ValueError("Invalid data type")
     db.session.add(Event(description=description, courseid=course, userid=user))
+    db.session.add(Event(description="Another Event", courseid=1, userid=2))
     db.session.commit()
+    print("Added Sample Events.")
 
 def kill_event(description):
     if type(description) is not str:
@@ -62,6 +64,7 @@ def fake_user():
     db.session.add(alice)
     db.session.add(bob)
     db.session.commit()
+    print("Added Sample Users")
 
 if __name__ == "__main__":
     with app.app_context():
@@ -87,5 +90,7 @@ if __name__ == "__main__":
         else:
             if "events.db" not in os.listdir(Path(".").resolve()):
                 create()
-                # fake_user()
+                fake_user()
+                fake_user()
                 classes_file("classes.csv")
+                sample_events()
