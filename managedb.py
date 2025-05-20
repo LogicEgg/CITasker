@@ -41,6 +41,16 @@ def kill_event(description):
         db.session.delete(target)
         db.session.commit()
         return "Event killed"
+    
+def kill_user(uname):
+    target = db.session.execute(select(User).where(User.uname == uname)).scalar()
+    if target:
+        db.session.delete(target)
+        db.session.commit()
+        print("Killed user.")
+        return True
+    else:
+        return False
 
 def fake_user():
     alice = User(uname="Alice", passwd=str(hashlib.sha256((pass1+SALT).encode()).hexdigest()))
@@ -56,13 +66,16 @@ if __name__ == "__main__":
             "drop": drop,
             "add_usrs": fake_user,
             "add_classes": classes_file,
-            "add_events": sample_events
+            "add_events": sample_events,
+            "kill_user": kill_user
             }
 
         if len(sys.argv) > 1:
             for command in sys.argv[1:]:
                 if "add_classes" in command and command.split("-")[1] in os.listdir(os.getcwd()):
                     coms["add_classes"](command.split("-")[1])
+                elif "kill_user" in command:
+                    coms["kill_user"](command.split("-")[1])
                 elif command in coms:
                     coms[command]()
                 else:
