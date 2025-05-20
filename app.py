@@ -7,7 +7,31 @@ from models import Course, Event
 from routes import api_bp, auth_bp, login_manager
 from datetime import datetime, timedelta
 import operator
-from os import environ, urandom
+from os import environ, urandom, listdir
+import csv
+
+SALT = environ.get("SALT", urandom(16).hex())
+pass1 = environ.get("pass1", "test")
+pass2 = environ.get("pass2", "test")
+
+
+def create():
+    db.create_all()
+    print("Tables created.")
+
+def classes_file(csvfile):
+    with open(csvfile) as classes:
+        data = csv.DictReader(classes)
+        for line in data:
+            db.session.add(Course(name=line["coursename"], term=int(line["term"])))
+        db.session.commit()
+    print("Classes added.")
+
+if "events.db" not in listdir(Path(".").resolve()):
+    create()
+    # fake_user()
+    classes_file("classes.csv")
+
 
 SECRET_KEY = environ.get("SECRET_KEY", urandom(16).hex())
 
