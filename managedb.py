@@ -10,8 +10,8 @@ from sqlalchemy import select
 from os import environ
 
 SALT = environ.get("SALT", os.urandom(16).hex())
-pass1 = environ.get("pass1", "test")
-pass2 = environ.get("pass2", "test")
+pass1 = environ.get("pass1", os.urandom(10).hex())
+pass2 = environ.get("pass2", os.urandom(10).hex())
 
 def create():
     db.create_all()
@@ -87,5 +87,6 @@ if __name__ == "__main__":
         else:
             if "events.db" not in os.listdir(Path(".").resolve()):
                 create()
-                # fake_user()
+                fake_user()
                 classes_file("classes.csv")
+                sample_events()
