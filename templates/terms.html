@@ -1,91 +1,316 @@
-{% extends "base.html" %} {% block content%}
-<div class="container mt-2">
-    <!-- <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ url_for('homepage') }}">Home</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Terms</li>
-        </ol>
-    </nav> -->
-    <h1 class="mb-4">Terms</h1>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
-            <div class="card h-300">
-                <img
-                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                    class="card-img h-100 object-fit-cover"
-                    alt="Term 1 Image"
-                />
-                <div
-                    class="card-img-overlay d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-50"
-                >
-                    <h2 class="card-title text-white">Term 1</h2>
-                    <a
-                        href="{{ url_for('term_classes', num=1) }}"
-                        class="btn btn-primary"
-                        >View Classes</a
-                    >
-                </div>
+{% extends "base.html" %}
+{% block content %}
+<div class="terms-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Academic Terms</h1>
+                <p class="hero-subtitle">Select a term to view your classes and track your progress</p>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-300">
-                <img
-                    src="https://images.unsplash.com/photo-1714846201700-35b42d937158?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    class="card-img h-100 object-fit-cover"
-                    alt="Term 2 Image"
-                />
-                <div
-                    class="card-img-overlay d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-50"
-                >
-                    <h2 class="card-title text-white">Term 2</h2>
-                    <a
-                        href="{{ url_for('term_classes', num=2) }}"
-                        class="btn btn-primary"
-                        >View Classes</a
-                    >
+    </div>
+
+    <!-- Terms Grid -->
+    <div class="container mb-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="term-card">
+                    <div class="term-card-inner">
+                        <div class="term-card-front" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                            <div class="term-overlay"></div>
+                            <div class="term-content">
+                                <div class="term-icon">
+                                    <i class="bi bi-1-circle-fill"></i>
+                                </div>
+                                <h3>Term 1</h3>
+                                <p>Foundation and Basics</p>
+                            </div>
+                        </div>
+                        <div class="term-card-back">
+                            <h3>Term 1</h3>
+                            <p>Begin with foundational concepts and core courses.</p>
+                            <a href="{{ url_for('term_classes', num=1) }}" class="btn btn-primary btn-lg mt-3">
+                                <span>View Classes</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card h-300">
-                <img
-                    src="https://plus.unsplash.com/premium_photo-1661963874418-df1110ee39c1?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    class="card-img h-100 object-fit-cover"
-                    alt="Term 3 Image"
-                />
-                <div
-                    class="card-img-overlay d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-50"
-                >
-                    <h2 class="card-title text-white">Term 3</h2>
-                    <a
-                        href="{{ url_for('term_classes', num=3) }}"
-                        class="btn btn-primary"
-                        >View Classes</a
-                    >
+
+            <div class="col-md-6 col-lg-3">
+                <div class="term-card">
+                    <div class="term-card-inner">
+                        <div class="term-card-front" style="background-image: url('https://images.unsplash.com/photo-1714846201700-35b42d937158?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                            <div class="term-overlay"></div>
+                            <div class="term-content">
+                                <div class="term-icon">
+                                    <i class="bi bi-2-circle-fill"></i>
+                                </div>
+                                <h3>Term 2</h3>
+                                <p>Building Skills</p>
+                            </div>
+                        </div>
+                        <div class="term-card-back">
+                            <h3>Term 2</h3>
+                            <p>Build skills through intermediate courses and hands-on work.</p>
+                            <a href="{{ url_for('term_classes', num=2) }}" class="btn btn-primary btn-lg mt-3">
+                                <span>View Classes</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card h-300">
-                <img
-                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                    class="card-img h-100 object-fit-cover"
-                    alt="Term 4 Image"
-                />
-                <div
-                    class="card-img-overlay d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-50"
-                >
-                    <h2 class="card-title text-white">Term 4</h2>
-                    <a
-                        href="{{ url_for('term_classes', num=4) }}"
-                        class="btn btn-primary"
-                        >View Classes</a
-                    >
+
+            <div class="col-md-6 col-lg-3">
+                <div class="term-card">
+                    <div class="term-card-inner">
+                        <div class="term-card-front" style="background-image: url('https://plus.unsplash.com/premium_photo-1661963874418-df1110ee39c1?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                            <div class="term-overlay"></div>
+                            <div class="term-content">
+                                <div class="term-icon">
+                                    <i class="bi bi-3-circle-fill"></i>
+                                </div>
+                                <h3>Term 3</h3>
+                                <p>Specialization</p>
+                            </div>
+                        </div>
+                        <div class="term-card-back">
+                            <h3>Term 3</h3>
+                            <p>Explore specialized subjects and deepen your expertise.</p>
+                            <a href="{{ url_for('term_classes', num=3) }}" class="btn btn-primary btn-lg mt-3">
+                                <span>View Classes</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="term-card">
+                    <div class="term-card-inner">
+                        <div class="term-card-front" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                            <div class="term-overlay"></div>
+                            <div class="term-content">
+                                <div class="term-icon">
+                                    <i class="bi bi-4-circle-fill"></i>
+                                </div>
+                                <h3>Term 4</h3>
+                                <p>Advanced Studies</p>
+                            </div>
+                        </div>
+                        <div class="term-card-back">
+                            <h3>Term 4</h3>
+                            <p>Refine advanced skills and prepare for your career path.</p>
+                            <a href="{{ url_for('term_classes', num=4) }}" class="btn btn-primary btn-lg mt-3">
+                                <span>View Classes</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.terms-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: white;
+    padding: 5rem 0;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+    background: linear-gradient(to right, #ffffff, #e9ecef);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+}
+
+.term-card {
+    perspective: 1000px;
+    height: 300px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.term-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.term-card:hover .term-card-inner {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.term-card-front {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    transition: all 0.5s ease;
+}
+
+.term-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+    border-radius: 15px;
+    transition: all 0.5s ease;
+}
+
+.term-content {
+    position: relative;
+    z-index: 1;
+}
+
+.term-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: white;
+    transition: all 0.5s ease;
+}
+
+.term-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.term-card p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.term-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.term-card:hover .term-card-front {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.term-card:hover .term-card-back {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.btn-primary {
+    background: white;
+    color: #0d6efd;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.term-card:hover .btn-primary {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #0a58ca;
+}
+
+.btn-primary span {
+    transition: color 0.3s ease;
+}
+
+.btn-primary:hover span {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .term-card {
+        height: 250px;
+    }
+    
+    .hero-section {
+        padding: 4rem 0;
+    }
+    
+    .hero-title {
+        font-size: 2.4rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+}
+</style>
 {% endblock %}

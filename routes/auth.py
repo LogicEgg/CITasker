@@ -14,35 +14,63 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 login_manager.login_view = "auth.login"
 
+
 @login_manager.user_loader
 def load_user(user_id):
-    
+
     return db.session.get(User, int(user_id))
+
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    if (request.form.get('uname') and request.form.get('password')):
-        user = db.session.execute(select(User).where(
-            and_(User.uname == request.form.get('uname'), User.passwd == hashlib.sha256((request.form.get('password')+SALT).encode()).hexdigest()))).scalar()
+    if request.form.get("uname") and request.form.get("password"):
+        user = db.session.execute(
+            select(User).where(
+                and_(
+                    User.uname == request.form.get("uname"),
+                    User.passwd
+                    == hashlib.sha256(
+                        (request.form.get("password") + SALT).encode()
+                    ).hexdigest(),
+                )
+            )
+        ).scalar()
         if user:
             login_user(user)
-            return redirect(url_for('homepage'))
+            return redirect(url_for("homepage"))
         else:
             return render_template("auth_page.html", failure=True)
     return render_template("auth_page.html", failure=False)
 
+
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.form:
-        if string_check(request.form.get('uname')) and string_check(request.form.get('password')) and not db.session.execute(select(User).where(User.uname == request.form.get('uname'))).scalar():
-            db.session.add(User(uname=request.form.get('uname'), passwd=str(hashlib.sha256((request.form.get('password')+SALT).encode()).hexdigest())))
+        if (
+            string_check(request.form.get("uname"))
+            and string_check(request.form.get("password"))
+            and not db.session.execute(
+                select(User).where(User.uname == request.form.get("uname"))
+            ).scalar()
+        ):
+            db.session.add(
+                User(
+                    uname=request.form.get("uname"),
+                    passwd=str(
+                        hashlib.sha256(
+                            (request.form.get("password") + SALT).encode()
+                        ).hexdigest()
+                    ),
+                )
+            )
             db.session.commit()
-            return redirect(url_for('auth.login'))
+            return redirect(url_for("auth.login"))
         else:
-            return render_template("register.html", failure=True)
-    return render_template("register.html", failure=False)
+            return render_template("auth_page.html", failure=True, flipped=True)
+    return render_template("auth_page.html", failure=False, flipped=True)
+
 
 @auth_bp.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('homepage'))
+    return redirect(url_for("homepage"))
