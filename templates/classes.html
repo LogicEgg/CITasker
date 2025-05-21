@@ -1,83 +1,226 @@
-{% extends "base.html" %} {% block content%}
-<div class="container mt-2">
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <!-- <li class="breadcrumb-item">
-            <a href="{{ url_for('homepage') }}">Home</a>
-        </li> -->
-        <li class="breadcrumb-item"><a href="{{ url_for('term_page') }}">Terms</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Term {{num}}</li>
-    </ol>
-</nav>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Term {{num}} Courses</h1>
-        <!-- <div class="dropdown">
-            <button
-                class="btn btn-outline-primary dropdown-toggle"
-                type="button"
-                id="sortDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-            >
-                Sort by
-            </button> -->
-            <!-- <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                <li><a class="dropdown-item" href="#">Course Name</a></li>
-                <li><a class="dropdown-item" href="#">Due Date</a></li>
-                <li><a class="dropdown-item" href="#">Priority</a></li>
-            </ul> -->
+{% extends "base.html" %}
+{% block content%}
+<div class="term-page">
+    <!-- Modern Header Section -->
+    <div class="header-section" style="background-image: url('{% if num == 1 %}https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80{% elif num == 2 %}https://images.unsplash.com/photo-1714846201700-35b42d937158?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% elif num == 3 %}https://plus.unsplash.com/premium_photo-1661963874418-df1110ee39c1?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% else %}https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80{% endif %}');">
+        <div class="header-overlay"></div>
+        <div class="container position-relative">
+            <nav class="modern-breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('term_page') }}">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Terms
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="bi bi-{{num}}-circle me-1"></i>Term {{num}}
+                    </li>
+                </ol>
+            </nav>
+            <h1 class="term-title">Term {{num}} Courses</h1>
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for class in data %}
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">{{ class.name }}</h5>
-                        <!-- <span class="badge bg-primary rounded-1">Term {{num}}</span> -->
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for class in data %}
+            <div class="col">
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3 class="course-title">{{ class.name }}</h3>
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <i class="bi bi-calendar-check"></i>
+                                <span>{{class.task_count()}} Tasks</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="bi bi-clock"></i>
+                                <span>{{class.upcoming()}}</span>
+                            </div>
+                        </div>
                     </div>
-                    <!-- <p class="card-text text-muted small mb-3">
-                        Click below to view and manage your tasks for this
-                        course.
-                    </p> -->
-                    <div class="d-grid">
-                        <a href="{{ url_for('class_page', id=class.id) }}" class="btn btn-outline-primary">View Tasks
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                class="bi bi-arrow-right ms-1"
-                                viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check me-1" viewBox="0 0 16 16">
-                                <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
-                            Tasks: {{class.task_count()}}
-                        </small>
-                        <small class="text-muted">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock me-1" viewBox="0 0 16 16">
-                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                            </svg>
-                            Due: {{class.upcoming()}}
-                        </small>
-                    </div>
+                    <a href="{{ url_for('class_page', id=class.id) }}" class="course-link">
+                        View Tasks
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
+
+<style>
+.term-page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.header-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+    color: white;
+    position: relative;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+}
+
+.modern-breadcrumb {
+    margin-bottom: 1rem;
+}
+
+.modern-breadcrumb .breadcrumb {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    padding: 0.5rem 1.25rem;
+    display: inline-flex;
+    margin: 0;
+}
+
+.modern-breadcrumb .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.modern-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 0.75rem;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.modern-breadcrumb .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.modern-breadcrumb .breadcrumb-item a:hover {
+    color: white;
+    transform: translateY(-1px);
+}
+
+.modern-breadcrumb .breadcrumb-item.active {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.term-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.course-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.course-content {
+    flex: 1;
+}
+
+.course-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: #212529;
+}
+
+.course-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.stat-item i {
+    font-size: 1rem;
+}
+
+.course-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+.course-link:hover {
+    color: #0a58ca;
+    transform: translateX(4px);
+}
+
+.course-link i {
+    transition: transform 0.2s ease;
+}
+
+.course-link:hover i {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        padding: 2rem 0;
+    }
+    
+    .term-title {
+        font-size: 2rem;
+    }
+    
+    .course-card {
+        padding: 1.25rem;
+    }
+    
+    .course-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+</style>
 {% endblock %}
