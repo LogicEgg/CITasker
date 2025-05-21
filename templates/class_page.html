@@ -1,122 +1,361 @@
 {% extends "base.html" %}
 
 {% block content%}
-<div class="container mt-2">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-chevron">
-            <!-- <li class="breadcrumb-item"><a href="{{ url_for('homepage') }}">Home</a></li> -->
-            <li class="breadcrumb-item"><a href="{{ url_for('term_page') }}">Terms</a></li>
-            <li class="breadcrumb-item"><a href="{{ url_for('term_classes', num=course.term) }}">Term
-                    {{course.term}}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{course.name}}</li>
-        </ol>
-    </nav>
-
-    <h1>{{course.name}}</h1>
-    <div class="mb-3">
-        <form action="{{ url_for('api.add', id=course.id) }}" method="POST">
-            <input type="hidden" name="id" value="{{ course.id }}" required>
-            <input type="hidden" name="userid" value="{{ user.id }}">
-            <div class="mb-3">
-                <label for="event" class="form-label">Event:</label>
-                <input type="text" class="form-control" name="event" placeholder="Description" required>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label for="deadline" class="form-label">Deadline:</label>
-                    <input type="date" class="form-control" name="deadline" placeholder="Deadline (YYYY-MM-DD)" required>
-                </div>
-                <div class="col ">
-                    <label for="due_time" class="form-label">Time Due:</label>
-                    <input type="time" class="form-control" name="due_time" placeholder="Time Due (HH:MM AM/PM)" value="23:59" required>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Add Event</button>
-        </form>
+<div class="class-page">
+    <!-- Modern Header Section -->
+    <div class="header-section" style="background-image: url('{% if course.term == 1 %}https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80{% elif course.term == 2 %}https://images.unsplash.com/photo-1714846201700-35b42d937158?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% elif course.term == 3 %}https://plus.unsplash.com/premium_photo-1661963874418-df1110ee39c1?q=80&w=1386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% else %}https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80{% endif %}');">
+        <div class="header-overlay"></div>
+        <div class="container position-relative">
+            <nav class="modern-breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('term_page') }}">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Terms
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('term_classes', num=course.term) }}">
+                            <i class="bi bi-{{course.term}}-circle me-1"></i>Term {{course.term}}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="bi bi-journal-text me-1"></i>{{course.name}}
+                    </li>
+                </ol>
+            </nav>
+            <h1 class="course-title">{{course.name}}</h1>
+        </div>
     </div>
 
-    <div class="list-group list-group-flush">
-    {% for i in events %}
-        {% if i.completed %}
-        <div class="list-group-item flex-fill bg-success-subtle">
-        {% else %}
-        <div class="list-group-item flex-fill">
-        {% endif %}
-            <h3 class="mb-4 mt-2">{{i.description}}</h3>
-            <div class="d-flex justify-content-between">
-                <p>Due: {{i.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}</p>
-                <div class="d-grid gap-1 d-md-flex">
-                    <form action="{{ url_for('api.complete', eventid=i.id) }}" method="POST">
+    <div class="container">
+        <!-- Modern Event Form -->
+        <div class="event-form-container">
+            <form action="{{ url_for('api.add', id=course.id) }}" method="POST" class="event-form">
+                <input type="hidden" name="id" value="{{ course.id }}" required>
+                <input type="hidden" name="userid" value="{{ user.id }}">
+                
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="event" name="event" placeholder="Event description" required>
+                    <label for="event">Event Description</label>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="deadline" name="deadline" required>
+                            <label for="deadline">Deadline</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="time" class="form-control" id="due_time" name="due_time" value="23:59" required>
+                            <label for="due_time">Time Due</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    <i class="bi bi-plus-lg me-2"></i>Add Event
+                </button>
+            </form>
+        </div>
+
+        <!-- Modern Event List -->
+        <div class="event-list mt-4">
+            {% for i in events %}
+            <div class="event-card {% if i.completed %}completed{% endif %}">
+                <div class="event-content">
+                    <h3 class="event-title">{{i.description}}</h3>
+                    <p class="event-due-date">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        {{i.deadline.strftime('%A %d, %b %Y, %I:%M%p %Z')}}
+                    </p>
+                </div>
+                
+                <div class="event-actions">
+                    <form action="{{ url_for('api.complete', eventid=i.id) }}" method="POST" class="d-inline">
                         {% if i.completed %}
-                        <button class="btn btn-warning d-flex align-items-center justify-content-center p-0" style="width: 40px; height: 40px;" type="submit">
+                        <button class="btn btn-icon btn-warning" type="submit" title="Mark as incomplete">
                             <input type="hidden" name="_method" value="PUT">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                </svg>
+                            <i class="bi bi-x-lg"></i>
                         </button>
                         {% else %}
-                        <button class="btn btn-success d-flex align-items-center justify-content-center p-0" style="width: 40px; height: 40px;" type="submit">
+                        <button class="btn btn-icon btn-success" type="submit" title="Mark as complete">
                             <input type="hidden" name="_method" value="PUT">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-check-lg" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
-                            </svg>
+                            <i class="bi bi-check-lg"></i>
                         </button>
                         {% endif %}
                     </form>
-                    <button class="btn btn-secondary d-flex align-items-center justify-content-center p-0" style="width: 40px; height: 40px;" type="button" data-bs-toggle="collapse" data-bs-target="#{{i.id}}"
-                        aria-expanded="false" aria-controls="{{i.id}}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                            <g transform="scale(0.9) translate(2,2)">
-                                <path
-                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-                            </g>
-                        </svg>
+                    
+                    <button class="btn btn-icon btn-secondary" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#{{i.id}}" aria-expanded="false" aria-controls="{{i.id}}" title="Edit">
+                        <i class="bi bi-pencil"></i>
                     </button>
-                    <form action="{{ url_for('api.delete', eventid=i.id) }}" method="POST">
-                        <button class="btn btn-danger d-flex align-items-center justify-content-center p-0" style="width: 40px; height: 40px;" type="submit">
+                    
+                    <form action="{{ url_for('api.delete', eventid=i.id) }}" method="POST" class="d-inline">
+                        <button class="btn btn-icon btn-danger" type="submit" title="Delete">
                             <input type="hidden" name="_method" value="DELETE">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                            </svg>
+                            <i class="bi bi-trash"></i>
                         </button>
                     </form>
                 </div>
-            </div>
-            <div class="collapse mt-1" id="{{ i.id }}">
-                <div class="card card-body">
-                    <form action="{{ url_for('api.edit', eventid=i.id) }}" method="POST">
-                        <input type="hidden" name="_method" value="PUT">
-                        <input type="hidden" name="id" value="{{ i.id }}" required>
-                        <div class="mb-3">
-                            <label for="event" class="form-label">Event:</label>
-                            <input type="text" class="form-control" name="event" value="{{ i.description }}"
-                            placeholder="Updated Description">
-                        </div>
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="deadline" class="form-label">Deadline:</label>
-                                    <input type="date" class="form-control" name="deadline"
-                                    placeholder="Updated Deadline (YYYY-MM-DD, HH:MM)">
+
+                <div class="collapse mt-3" id="{{ i.id }}">
+                    <div class="edit-form">
+                        <form action="{{ url_for('api.edit', eventid=i.id) }}" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="id" value="{{ i.id }}" required>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edit-event-{{i.id}}" name="event" 
+                                       value="{{ i.description }}" placeholder="Updated Description">
+                                <label for="edit-event-{{i.id}}">Event Description</label>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="edit-deadline-{{i.id}}" 
+                                               name="deadline" value="{{ i.deadline.strftime('%Y-%m-%d') }}">
+                                        <label for="edit-deadline-{{i.id}}">Deadline</label>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label for="time" class="form-label">Time Due:</label>
-                                    <input type="time" class="form-control" name="due_time"
-                                    placeholder="Updated Time Due (HH:MM)">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="time" class="form-control" id="edit-time-{{i.id}}" 
+                                               name="due_time" value="{{ i.deadline.strftime('%H:%M') }}">
+                                        <label for="edit-time-{{i.id}}">Time Due</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Edit Event</button>
-                    </form>
+                            
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Save Changes</button>
+                        </form>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
+
+<style>
+.class-page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.header-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+    color: white;
+    position: relative;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+}
+
+.modern-breadcrumb {
+    margin-bottom: 1rem;
+}
+
+.modern-breadcrumb .breadcrumb {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    padding: 0.5rem 1.25rem;
+    display: inline-flex;
+    margin: 0;
+}
+
+.modern-breadcrumb .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.modern-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 0.75rem;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.modern-breadcrumb .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.modern-breadcrumb .breadcrumb-item a:hover {
+    color: white;
+    transform: translateY(-1px);
+}
+
+.modern-breadcrumb .breadcrumb-item.active {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.modern-breadcrumb .breadcrumb-item i {
+    font-size: 1rem;
+    margin-right: 0.35rem;
+}
+
+.course-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-form-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.form-floating > .form-control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.form-floating > .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+.event-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.event-card.completed {
+    background-color: #f8f9fa;
+}
+
+.event-card.completed .event-title {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.event-content {
+    flex: 1;
+    min-width: 200px;
+}
+
+.event-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #212529;
+}
+
+.event-due-date {
+    color: #6c757d;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.event-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    transform: translateY(-1px);
+}
+
+.edit-form {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        padding: 1.5rem 0;
+    }
+    
+    .course-title {
+        font-size: 2rem;
+    }
+    
+    .event-form-container {
+        padding: 1.5rem;
+    }
+    
+    .event-card {
+        padding: 1rem;
+    }
+    
+    .event-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .modern-breadcrumb .breadcrumb {
+        padding: 0.4rem 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .modern-breadcrumb .breadcrumb-item {
+        font-size: 0.85rem;
+    }
+    
+    .modern-breadcrumb .breadcrumb-item i {
+        font-size: 0.9rem;
+    }
+}
+</style>
 {% endblock %}
